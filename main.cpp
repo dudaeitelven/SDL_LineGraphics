@@ -695,6 +695,22 @@ int main()
                             yvel =  1;
                             printf("Pressionada a tecla DOWN\n");
                             break;
+                        case SDLK_PLUS:
+                            yvel =  0;
+                            printf("Pressionada a tecla PLUS\n");
+                            break;
+                        case SDLK_KP_PLUS:
+                            yvel =  0;
+                            printf("Pressionada a tecla PLUS\n");
+                            break;
+                        case SDLK_MINUS:
+                            yvel =  0;
+                            printf("Pressionada a tecla MINUS\n");
+                            break;
+                        case SDLK_KP_MINUS:
+                            yvel =  0;
+                            printf("Pressionada a tecla MINUS\n");
+                            break;
                         default:
                             break;
                     }
