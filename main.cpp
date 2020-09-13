@@ -17,7 +17,7 @@ int width, height;
 SDL_Surface * window_surface;
 SDL_Renderer * renderer;
 
-std::string titulo = "Exemplo SDL2";
+std::string titulo = "SDL Graphics";
 
 int pos_x = 0;
 int pos_y = 0;
@@ -635,6 +635,12 @@ void display2()
     drawLine(0,240,639,240,RGB(255,0,0));
 }
 
+void displayBaseGrafico()
+{
+    drawLine(125,575,675,575,RGB(0,0,0));
+    drawLine(125,25,125,575,RGB(0,0,0));
+}
+
 int main()
 {
 
@@ -793,7 +799,14 @@ int main()
             }
         }
 
-        display();
+        //display();
+
+        //display1();
+
+        //display2();
+
+        displayBaseGrafico();
+
 
         SDL_UpdateWindowSurface(window);
     }
