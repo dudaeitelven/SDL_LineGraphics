@@ -634,6 +634,9 @@ void display2()
 
     drawLine(0,240,639,240,RGB(255,0,0));
 }
+void teste (){
+//TESTE COMMIT
+}
 
 void displayBaseGraphic()
 {
@@ -653,24 +656,25 @@ void displayBaseGraphic()
     drawLine(125,25,675,575,RGB(255,0,0));
 
     //y = 2x²-6x+1x+1
-    //xs[1] = 50;
-    //ys[1] = 400;
+    /*
+    xs[1] = 50;
+    ys[1] = 400;
 
-    //xs[2] = 430;
-    //ys[2] = 20;
+    xs[2] = 430;
+    ys[2] = 20;
 
-    //xs[3] = 0;
-    //ys[3] = 0;
+    xs[3] = 0;
+    ys[3] = 0;
 
-    //xs[4] = 0;
-    //ys[4] = 0;
+    xs[4] = 0;
+    ys[4] = 0;
 
-    //xs[5] = 0;
-    //ys[5] = 0;
+    xs[5] = 0;
+    ys[5] = 0;
 
-    //xs[6] = 0;
-    //ys[6] = 0;
-
+    xs[6] = 0;
+    ys[6] = 0;
+    */
     //bezierCurve(xs,ys,true, RGB(0,0,255));
 
 }

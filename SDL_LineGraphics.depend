@@ -377,3 +377,18 @@
 	<time.h>
 	<stdbool.h>
 
+1600044987 source:d:\wscodeblocks\computacaografica\sdl_linegraphs\sdl_linegraphs\sdl_linegraphics\main.cpp
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+	<SDL2/SDL.h>
+	<stack>
+	<sstream>
+	<unistd.h>
+	"util.c"
+
+1600044987 d:\wscodeblocks\computacaografica\sdl_linegraphs\sdl_linegraphs\sdl_linegraphics\util.c
+	<stdlib.h>
+	<time.h>
+	<stdbool.h>
+
