@@ -271,6 +271,45 @@ void drawLine(int x1, int y1, int x2, int y2, Uint32 cor)
     }
 }
 
+
+void drawClippedLineMD(float xmin, float ymin, float xmax, float ymax,
+    float x1, float y1, float x2, float y2, Uint32 color){
+
+    float x[2],y[2];
+    int  i;
+
+    if(!(x1<xmin && x2<xmin) && !(x1>xmax && x2>xmax)) {
+        if(!(y1<ymin && y2<ymin) && !(y1>ymax && y2>ymax)) {
+
+            x[0] = x1;
+            y[0] = y1;
+            x[1] = x2;
+            y[1] = y2;
+
+            for(i = 0; i < 2; i++){
+                if(x[i]<xmin){
+                    x[i]=xmin;
+                    y[i]=((y2-y1)/(x2-x1))*(xmin-x1)+y1;
+                } else if(x[i]>xmax){
+                    x[i]=xmax;
+                    y[i]=((y2-y1)/(x2-x1))*(xmax-x1)+y1;
+                }
+                if(y[i]<ymin){
+                    y[i]=ymin;
+                    x[i]=((x2-x1)/(y2-y1))*(ymin-y1)+x1;
+                } else if(y[i]>ymax){
+                    y[i]=ymax;
+                    x[i]=((x2-x1)/(y2-y1))*(ymax-y1)+x1;
+                }
+
+            }
+            if(!(x[0]<xmin && x[1]<xmin) && !(x[0]>xmax && x[1]>xmax)) {
+                drawLine(x[0],y[0],x[1],y[1], color);
+            }
+        }
+    }
+}
+
 void drawRectangle(int x1, int y1, int x2, int y2, Uint32 lineColor)
 {
     drawLine(x1,y1, x2,y1, lineColor);
@@ -551,10 +590,66 @@ void randomFill() {
 
 }
 
-void display() {
-    drawRectangle(pos_x+300,pos_y+100,pos_x+400,pos_y+200,RGB(255,0,0),RGB(0,255,0));
+/* --- FUNÇÕES ---
+Função 1 y = x
+Função 2 y = -x
+Função 3 y = 2x^2-6x+1x+1
+Função 4 y = sin x
+Função 5 y = -x^2+4
+*/
+
+
+// y = x
+void funcao1 (Uint32 color)
+{
+//TESTE Func
+    float x,y=0.0;
+
+    for(x=0.0; x<800; x= x+0.01)
+    {
+        y=x;
+        setPixel(x,y,color);
+    }
+
+
 }
 
+void displayBaseGraphic(int pos_x, int pos_y)
+{
+
+    //Linhas internas X do Grafico
+    drawClippedLineMD(pos_x+125,pos_y+25,pos_x+675,pos_y+575,0,25,800,25,RGB(0,0,0));
+
+    drawClippedLineMD(pos_x+125,pos_y+25,pos_x+675,pos_y+575,0,162.5,800,162.5,RGB(0,0,0));
+
+    drawClippedLineMD(pos_x+125,pos_y+25,pos_x+675,pos_y+575,0,300,800,300,RGB(0,0,0));
+
+    drawClippedLineMD(pos_x+125,pos_y+25,pos_x+675,pos_y+575,0,437.5,800,437.5,RGB(0,0,0));
+
+    drawClippedLineMD(pos_x+125,pos_y+25,pos_x+675,pos_y+575,0,575,800,575,RGB(0,0,0));
+
+     //Linhas internas Y do Grafico
+    drawClippedLineMD(pos_x+125,pos_y+25,pos_x+675,pos_y+575,125,0,125,600,RGB(0,0,0));
+
+    drawClippedLineMD(pos_x+125,pos_y+25,pos_x+675,pos_y+575,262.5,0,262.5,600,RGB(0,0,0));
+
+    drawClippedLineMD(pos_x+125,pos_y+25,pos_x+675,pos_y+575,400,0,400,600,RGB(0,0,0));
+
+    drawClippedLineMD(pos_x+125,pos_y+25,pos_x+675,pos_y+575,537.5,0,537.5,600,RGB(0,0,0));
+
+    drawClippedLineMD(pos_x+125,pos_y+25,pos_x+675,pos_y+575,675,0,675,600,RGB(0,0,0));
+
+
+}
+
+
+void display() {
+    drawRectangle(pos_x+125,pos_y+25,pos_x+675,pos_y+575,RGB(0,0,0),RGB(255,255,255));
+    displayBaseGraphic(pos_x,pos_y);
+    //funcao1(RGB(0,0,255));
+}
+
+/*
 void display1()
 {
         drawLine(639,100,0,050,RGB(255,0,0));
@@ -635,69 +730,12 @@ void display2()
     drawLine(0,240,639,240,RGB(255,0,0));
 }
 
-
-
-
-void displayBaseGraphic()
-{
-    int xs[6];
-    int ys[6];
-
-    //Base graphic x
-    drawLine(125,575,675,575,RGB(0,0,0));
-
-    //Base graphic y
-    drawLine(125,25,125,575,RGB(0,0,0));
-
-    //y = x
-    drawLine(675,25,125,575,RGB(0,255,0));
-
-    //y = -x
-    drawLine(125,25,675,575,RGB(255,0,0));
-
-    //y = 2x²-6x+1x+1
-    /*
-    xs[1] = 50;
-    ys[1] = 400;
-
-    xs[2] = 430;
-    ys[2] = 20;
-
-    xs[3] = 0;
-    ys[3] = 0;
-
-    xs[4] = 0;
-    ys[4] = 0;
-
-    xs[5] = 0;
-    ys[5] = 0;
-
-    xs[6] = 0;
-    ys[6] = 0;
-    */
-    //bezierCurve(xs,ys,true, RGB(0,0,255));
-
-}
-
-
-/* --- FUNÇÕES ---
-Função 1 y = x
-Função 2 y = -x
-Função 3 y = 2x^2-6x+1x+1
-Função 4 y = sin x
-Função 5 y = -x^2+4
 */
 
 
-// y = x
-void funcao1 (Uint32 color){
-//TESTE COMMIT
-    int x,y;
 
 
-    setPixel(x,y,color);
 
-}
 
 
 int main()
@@ -858,13 +896,13 @@ int main()
             }
         }
 
-        //display();
+        display();
 
         //display1();
 
         //display2();
 
-        displayBaseGraphic();
+        //displayBaseGraphic();
 
 
         SDL_UpdateWindowSurface(window);
