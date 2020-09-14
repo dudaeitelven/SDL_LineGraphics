@@ -634,9 +634,9 @@ void display2()
 
     drawLine(0,240,639,240,RGB(255,0,0));
 }
-void teste (){
-//TESTE COMMIT
-}
+
+
+
 
 void displayBaseGraphic()
 {
@@ -678,6 +678,27 @@ void displayBaseGraphic()
     //bezierCurve(xs,ys,true, RGB(0,0,255));
 
 }
+
+
+/* --- FUNÇÕES ---
+Função 1 y = x
+Função 2 y = -x
+Função 3 y = 2x^2-6x+1x+1
+Função 4 y = sin x
+Função 5 y = -x^2+4
+*/
+
+
+// y = x
+void funcao1 (Uint32 color){
+//TESTE COMMIT
+    int x,y;
+
+
+    setPixel(x,y,color);
+
+}
+
 
 int main()
 {
