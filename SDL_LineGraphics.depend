@@ -362,7 +362,7 @@
 	"begin_code.h"
 	"close_code.h"
 
-1600017308 source:c:\sdl_linegraphics\main.cpp
+1600139700 source:c:\sdl_linegraphics\main.cpp
 	<stdio.h>
 	<stdlib.h>
 	<math.h>
@@ -372,7 +372,7 @@
 	<unistd.h>
 	"util.c"
 
-1599931236 c:\sdl_linegraphics\util.c
+1597531398 c:\sdl_linegraphics\util.c
 	<stdlib.h>
 	<time.h>
 	<stdbool.h>

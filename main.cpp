@@ -31,6 +31,9 @@ std::string titulo = "SDL Graphics";
 int pos_x = 0;
 int pos_y = 0;
 
+float zoom_x = 0;
+float zoom_y = 0;
+
 unsigned char b;
 double valord;
 bool b1;
@@ -389,11 +392,6 @@ void drawClippedPixelMD(float xmin, float ymin, float xmax, float ymax,
     }
 }
 
-
-
-
-
-
 void drawRectangle(int x1, int y1, int x2, int y2, Uint32 lineColor)
 {
     drawLine(x1,y1, x2,y1, lineColor);
@@ -695,55 +693,12 @@ void randomFill()
 /* --- FUNÇÕES ---
 Função 1 y = x
 Função 2 y = -x
-Função 3 y = 2x^2-6x+1
+Função 3 y = (2*pow(x,2))-(6*x)+1
 Função 4 y = sin x
-Função 5 y = -x^2+4
+Função 5 y = -pow(x,2)+4;
 */
 
-
-// y = x
-void funcao1 (int pos_x,int pos_y,Uint32 color)
-{
-
-    float x,y=0.0;
-    int posicaoX,posicaoY;
-    for(x=-300; x<300; x= x+0.01)
-    {
-        y=x;
-        //posicaoX =pos_x+x+400;
-        //posicaoY = pos_y+y+300;
-        //drawRectangle(posicaoX,posicaoY,posicaoX+2,posicaoY+2,color);
-        drawClippedPixelMD(125,25,675,575,pos_x+x+400,pos_y+y+300,pos_x+x+400,pos_y+y+300,color);
-    }
-}
-
-
-//Função 2 y = -x
-void funcao2 (int pos_x,int pos_y,Uint32 color)
-{
-
-    float x,y=0.0;
-    for(x=-300; x<300; x= x+0.01)
-    {
-        y=-x;
-        drawClippedPixelMD(125,25,675,575,pos_x+x+400,pos_y+y+300,pos_x+x+400,pos_y+y+300,color);
-    }
-}
-
-//Função 3 y = 2x^2-6x+1
-void funcao3 (int pos_x,int pos_y,Uint32 color)
-{
-
-    float x,y=0.0;
-    for(x=-300; x<300; x= x+0.01)
-    {
-        y=(2*pow(x,2))-(6*x)+1;
-        drawClippedPixelMD(125,25,675,575,pos_x+x+400,pos_y+y+300,pos_x+x+400,pos_y+y+300,color);
-    }
-}
-
-//Função 4 y = sin x
-void funcao4 (int pos_x,int pos_y,Uint32 color)
+void plotGraphic(int pos_x,int pos_y,int sel_func, Uint32 color)
 {
 
     float x,y=0.0;
@@ -756,180 +711,78 @@ void funcao4 (int pos_x,int pos_y,Uint32 color)
 
     MIN_EXB.x = 0;
     MIN_EXB.y = 0;
-    MAX_EXB.x = 27.5;
-    MAX_EXB.y = 27.5;
+    MAX_EXB.x = 27.5 + zoom_x;
+    MAX_EXB.y = 27.5 + zoom_y;
 
     for(x=-300; x<300; x= x+0.01)
     {
-        y=sin(x);
-        posicaoX =x;
+        switch(sel_func)
+        {
+        case 1:
+            y = x;
+            break;
+        case 2:
+            y = -x;
+            break;
+        case 3:
+            y = (2*pow(x,2))-(6*x)+1;
+            break;
+        case 4:
+            y = sin(x);
+            break;
+        case 5:
+            y = -pow(x,2)+4;;
+            break;
+        default:
+            break;
+        }
+
+        posicaoX = x;
         posicaoY = y;
 
-        xd = (((posicaoX - MIN_SEL.x) * (MAX_EXB.x - MIN_EXB.x))/(MAX_SEL.x - MIN_SEL.x))+MIN_EXB.x;
-
-        yd = (((posicaoY - MIN_SEL.y) * (MAX_EXB.y - MIN_EXB.y))/(MAX_SEL.y - MIN_SEL.y))+MIN_EXB.y;
+        xd = (((posicaoX - MIN_SEL.x) * (MAX_EXB.x - MIN_EXB.x)) / (MAX_SEL.x - MIN_SEL.x)) + MIN_EXB.x;
+        yd = (((posicaoY - MIN_SEL.y) * (MAX_EXB.y - MIN_EXB.y)) / (MAX_SEL.y - MIN_SEL.y)) + MIN_EXB.y;
 
         drawClippedPixelMD(125,25,675,575,pos_x+400+xd,pos_y+yd+300,pos_x+xd+400,pos_y+yd+300,color);
     }
 }
 
-//Função 5 y = -x^2+4
-void funcao5 (int pos_x,int pos_y,Uint32 color)
-{
-
-    float x,y=0.0;
-    for(x=-300; x<300; x= x+0.01)
-    {
-        y=-pow(x,2)+4;
-        drawClippedPixelMD(125,25,675,575,pos_x+x+400,pos_y+y+300,pos_x+x+400,pos_y+y+300,color);
-    }
-}
-
-
-
-
-
-
 void displayBaseGraphic(int pos_x, int pos_y)
 {
-
     //Linhas internas X do Grafico
     drawClippedLineMD(125,25,675,575,pos_x+0,pos_y+25,pos_x+800,pos_y+25,RGB(192,192,192));
-
     drawClippedLineMD(125,25,675,575,pos_x+0,pos_y+162.5,pos_x+800,pos_y+162.5,RGB(192,192,192));
-
     drawClippedLineMD(125,25,675,575,pos_x+0,pos_y+300,pos_x+800,pos_y+300,RGB(0,0,0));
-
     drawClippedLineMD(125,25,675,575,pos_x+0,pos_y+437.5,pos_x+800,pos_y+437.5,RGB(192,192,192));
-
     drawClippedLineMD(125,25,675,575,pos_x+0,pos_y+575,pos_x+800,pos_y+575,RGB(192,192,192));
 
-
     //Linhas internas Y do Grafico
-
     drawClippedLineMD(125,25,675,575,pos_x+125,pos_y+0,pos_x+125,pos_y+600,RGB(192,192,192));
-
     drawClippedLineMD(125,25,675,575,pos_x+262.5,pos_y+0,pos_x+262.5,pos_y+600,RGB(192,192,192));
-
     drawClippedLineMD(125,25,675,575,pos_x+400,pos_y+0,pos_x+400,pos_y+600,RGB(0,0,0));
-
     drawClippedLineMD(125,25,675,575,pos_x+537.5,pos_y+0,pos_x+537.5,pos_y+600,RGB(192,192,192));
-
     drawClippedLineMD(125,25,675,575,pos_x+675,pos_y+0,pos_x+675,pos_y+600,RGB(192,192,192));
-
-
 }
-
 
 void display()
 {
-    //drawRectangle(pos_x+125,pos_y+25,pos_x+675,pos_y+575,RGB(0,0,0),RGB(255,255,255));
-
-
-
     drawRectangle(125,25,675,575,RGB(0,0,0),RGB(255,255,255));
     displayBaseGraphic(pos_x,pos_y);
-    //funcao1(pos_x,pos_y,RGB(0,0,255));
-    //funcao2(pos_x,pos_y,RGB(255,0,0));
-    //funcao3(pos_x,pos_y,RGB(0,255,0));
-    funcao4(pos_x,pos_y,RGB(255,0,0));
-    //funcao5(pos_x,pos_y,RGB(255,255,0));
+
+    plotGraphic(pos_x,pos_y,1,RGB(255,0,0));
+    plotGraphic(pos_x,pos_y,2,RGB(0,255,0));
+    plotGraphic(pos_x,pos_y,3,RGB(0,0,255));
+    plotGraphic(pos_x,pos_y,4,RGB(255,255,0));
+    plotGraphic(pos_x,pos_y,5,RGB(0,255,255));
 }
-
-
-void display1()
-{
-        drawLine(639,100,0,050,RGB(255,0,0));
-        drawLine(639,100,0,100,RGB(255,0,0));
-        drawLine(639,100,0,150,RGB(255,0,0));
-
-        drawWuLine(639,300,0,250,RGB(255,0,0));
-        drawWuLine(639,300,0,300,RGB(255,0,0));
-        drawWuLine(639,300,0,350,RGB(255,0,0));
-
-        drawLine(100,479,050,000,RGB(0,0,255));
-        drawLine(100,479,100,000,RGB(0,0,255));
-        drawLine(100,479,150,000,RGB(0,0,255));
-
-        drawWuLine(300,479,250,000,RGB(0,0,255));
-        drawWuLine(300,479,300,000,RGB(0,0,255));
-        drawWuLine(300,479,350,000,RGB(0,0,255));
-
-        int xs[] = {70,150,589,629};
-        int ys[] = {70,289,50,429};
-
-        bezierCurve(xs,ys,true, RGB(255,0,0));
-
-
-        xs[1] = 50;
-        ys[1] = 400;
-        xs[2] = 430;
-        ys[2] = 20;
-
-        bezierCurve(xs,ys,true, RGB(0,0,255));
-
-
-
-        floodFill(146,413,RGB(0,255,0));
-        floodFill(600,50,RGB(255,255,0));
-
-        floodFill(200,200,RGB(255,0,0));
-        floodFill(150,50,RGB(255,0,255));
-
-
-        circleBres(500,400,50, RGB(0,0,255));
-        floodFill(500,400,RGB(0,0,255));
-
-        for(int r = 40; r >  10; r-=5) {
-            circleBres(550,200,r, RGB(0,0,255));
-            floodFill(550,200,RGB(255-(r*4),0,0));
-        }
-
-        randomFill();
-}
-
-void display2()
-{
-
-    drawLine(0,0,639,479,RGB(255,0,0));
-
-    drawLine(0,240,639,240,RGB(0,0,255));
-
-    drawWuLine(320,240,639,120,RGB(255,0,0));
-
-    drawRectangle(100, 200, 200, 250, RGB(0,0,255));
-
-    drawRectangle(30, 300, 350, 450, RGB(255,255,255), RGB(255, 0, 0));
-
-    floodFill(10,20,RGB(200, 0, 127),RGB(0, 255, 255));
-    floodFill(10,470,RGB(255, 255, 0),RGB(0, 255, 255));
-    floodFill(100,10,RGB(0, 255, 0),RGB(0, 255, 255));
-    floodFill(500,300,RGB(0, 0, 255),RGB(0, 255, 255));
-
-    target(320,240,RGB(0, 0, 255));
-
-    drawLine(320,0,320,479,RGB(255,0,0));
-    drawLine(320,0,315,479,RGB(255,0,0));
-    drawLine(320,0,325,479,RGB(255,0,0));
-    drawLine(320,0,305,479,RGB(255,0,0));
-    drawLine(320,0,335,479,RGB(255,0,0));
-
-    drawLine(0,240,639,240,RGB(255,0,0));
-}
-
-
-
-
-
-
-
 
 
 int main()
 {
-
     int xvel = 0;
     int yvel = 0;
+    float xzoom = 0;
+    float yzoom = 0;
     // Inicializações iniciais obrigatórias
 
     setlocale(LC_ALL, NULL);
@@ -988,19 +841,23 @@ int main()
                     printf("Pressionada a tecla DOWN\n");
                     break;
                 case SDLK_PLUS:
-                    yvel =  0;
+                    xzoom =  1;
+                    yzoom =  1;
                     printf("Pressionada a tecla PLUS\n");
                     break;
                 case SDLK_KP_PLUS:
-                    yvel =  0;
+                    xzoom =  1;
+                    yzoom =  1;
                     printf("Pressionada a tecla PLUS\n");
                     break;
                 case SDLK_MINUS:
-                    yvel =  0;
+                    xzoom =  -1;
+                    yzoom =  -1;
                     printf("Pressionada a tecla MINUS\n");
                     break;
                 case SDLK_KP_MINUS:
-                    yvel =  0;
+                    xzoom =  -1;
+                    yzoom =  -1;
                     printf("Pressionada a tecla MINUS\n");
                     break;
                 default:
@@ -1034,6 +891,26 @@ int main()
                     if( yvel > 0 )
                         yvel = 0;
                     break;
+                case SDLK_PLUS:
+                    if( xzoom > 0 )
+                        xzoom = 0;
+                        yzoom = 0;
+                    break;
+                case SDLK_KP_PLUS:
+                    if( xzoom > 0 )
+                        xzoom = 0;
+                        yzoom = 0;
+                    break;
+                case SDLK_MINUS:
+                    if( xzoom < 0 )
+                        xzoom = 0;
+                        yzoom = 0;
+                    break;
+                case SDLK_KP_MINUS:
+                    if( xzoom < 0 )
+                        xzoom = 0;
+                        yzoom = 0;
+                    break;
                 default:
                     break;
                 }
@@ -1042,11 +919,11 @@ int main()
                 break;
             }
 
-
             /* Update the alien position */
-
-            pos_x += xvel;
-            pos_y += yvel;
+            pos_x  += xvel;
+            pos_y  += yvel;
+            zoom_x += xzoom;
+            zoom_y += yzoom;
 
             if (event.type == SDL_WINDOWEVENT)
             {
@@ -1082,19 +959,11 @@ int main()
         {
             for (int x = 0; x < width; ++x)
             {
-                //pixels[x + y * width] = SDL_MapRGBA(window_surface->format, 200, 200, 200, 255);
                 setPixel(x, y, RGB(220,220,220));
             }
         }
 
         display();
-
-        //display1();
-
-        //display2();
-
-        //displayBaseGraphic();
-
 
         SDL_UpdateWindowSurface(window);
     }
