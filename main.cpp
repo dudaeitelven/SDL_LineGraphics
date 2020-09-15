@@ -694,9 +694,13 @@ void funcao1 (int pos_x,int pos_y,Uint32 color)
 {
 
     float x,y=0.0;
+    int posicaoX,posicaoY;
     for(x=-300; x<300; x= x+0.01)
     {
         y=x;
+        //posicaoX =pos_x+x+400;
+        //posicaoY = pos_y+y+300;
+        //drawRectangle(posicaoX,posicaoY,posicaoX+2,posicaoY+2,color);
         drawClippedPixelMD(125,25,675,575,pos_x+x+400,pos_y+y+300,pos_x+x+400,pos_y+y+300,color);
     }
 }
@@ -731,10 +735,16 @@ void funcao4 (int pos_x,int pos_y,Uint32 color)
 {
 
     float x,y=0.0;
+    int posicaoX,posicaoY;
     for(x=-300; x<300; x= x+0.01)
     {
         y=sin(x);
-        drawClippedPixelMD(125,25,675,575,pos_x+x+400,pos_y+y+300,pos_x+x+400,pos_y+y+300,color);
+        posicaoX =pos_x+x+400;
+        posicaoY = pos_y+y+300;
+
+        //drawRectangle(posicaoX,posicaoY,posicaoX+2,posicaoY+2,color);
+
+        drawClippedPixelMD(125,25,675,575,posicaoX,posicaoY,posicaoX,posicaoY,color);
     }
 }
 
@@ -799,7 +809,7 @@ void display()
     funcao5(pos_x,pos_y,RGB(255,255,0));
 }
 
-/*
+
 void display1()
 {
         drawLine(639,100,0,050,RGB(255,0,0));
@@ -880,7 +890,7 @@ void display2()
     drawLine(0,240,639,240,RGB(255,0,0));
 }
 
-*/
+
 
 
 
