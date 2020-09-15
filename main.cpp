@@ -10,7 +10,10 @@
 
 using namespace std;
 
-typedef struct {int x, y;} Point;
+typedef struct
+{
+    int x, y;
+} Point;
 
 unsigned int * pixels;
 int width, height;
@@ -27,16 +30,16 @@ double valord;
 bool b1;
 
 unsigned char code(double    x, double    y,
-          double xmin, double xmax, double ymin, double ymax)
+                   double xmin, double xmax, double ymin, double ymax)
 {
-   unsigned char code=0;
+    unsigned char code=0;
 
-   if (y > ymax) code += 8;
-   if (y < ymin) code += 4;
-   if (x > xmax) code += 2;
-   if (x < xmin) code += 1;
+    if (y > ymax) code += 8;
+    if (y < ymin) code += 4;
+    if (x > xmax) code += 2;
+    if (x < xmin) code += 1;
 
-   return code;
+    return code;
 }
 
 Point getPoint(int x, int y)
@@ -79,39 +82,43 @@ void printMousePosition(int x, int y)
 
 void setPixel(int x, int y, Uint32 color)
 {
-    if((x<0 || x>=width || y<0 || y>=height)) {
+    if((x<0 || x>=width || y<0 || y>=height))
+    {
         printf("Coordenada inválida : (%d,%d)\n",x,y);
         return;
     }
     pixels[x + y * width] = color;
 }
 
-Uint32 RGB(int r, int g, int b) {
+Uint32 RGB(int r, int g, int b)
+{
     return SDL_MapRGBA(window_surface->format, r, g, b, 255);
 }
 
-Uint8 getColorComponent( Uint32 pixel, char component ) {
+Uint8 getColorComponent( Uint32 pixel, char component )
+{
 
     Uint32 mask;
 
-    switch(component) {
-        case 'b' :
-        case 'B' :
-            mask = RGB(0,0,255);
-            pixel = pixel & mask;
-            break;
-        case 'r' :
-        case 'R' :
-            mask = RGB(255,0,0);
-            pixel = pixel & mask;
-            pixel = pixel >> 16;
-            break;
-        case 'g' :
-        case 'G' :
-            mask = RGB(0,255,0);
-            pixel = pixel & mask;
-            pixel = pixel >> 8;
-            break;
+    switch(component)
+    {
+    case 'b' :
+    case 'B' :
+        mask = RGB(0,0,255);
+        pixel = pixel & mask;
+        break;
+    case 'r' :
+    case 'R' :
+        mask = RGB(255,0,0);
+        pixel = pixel & mask;
+        pixel = pixel >> 16;
+        break;
+    case 'g' :
+    case 'G' :
+        mask = RGB(0,255,0);
+        pixel = pixel & mask;
+        pixel = pixel >> 8;
+        break;
     }
     return (Uint8) pixel;
 }
@@ -210,7 +217,7 @@ void drawLine(int x1, int y1, int x2, int y2, Uint32 cor)
             xe=x1;
         }
         setPixel(x,y,cor);
-        for(i=0;x<xe;i++)
+        for(i=0; x<xe; i++)
         {
             x=x+1;
             if(px<0)
@@ -247,7 +254,7 @@ void drawLine(int x1, int y1, int x2, int y2, Uint32 cor)
             ye=y1;
         }
         setPixel(x,y,cor);
-        for(i=0;y<ye;i++)
+        for(i=0; y<ye; i++)
         {
             y=y+1;
             if(py<=0)
@@ -273,42 +280,107 @@ void drawLine(int x1, int y1, int x2, int y2, Uint32 cor)
 
 
 void drawClippedLineMD(float xmin, float ymin, float xmax, float ymax,
-    float x1, float y1, float x2, float y2, Uint32 color){
+                       float x1, float y1, float x2, float y2, Uint32 color)
+{
 
     float x[2],y[2];
     int  i;
 
-    if(!(x1<xmin && x2<xmin) && !(x1>xmax && x2>xmax)) {
-        if(!(y1<ymin && y2<ymin) && !(y1>ymax && y2>ymax)) {
+    if(!(x1<xmin && x2<xmin) && !(x1>xmax && x2>xmax))
+    {
+        if(!(y1<ymin && y2<ymin) && !(y1>ymax && y2>ymax))
+        {
 
             x[0] = x1;
             y[0] = y1;
             x[1] = x2;
             y[1] = y2;
 
-            for(i = 0; i < 2; i++){
-                if(x[i]<xmin){
+            for(i = 0; i < 2; i++)
+            {
+                if(x[i]<xmin)
+                {
                     x[i]=xmin;
                     y[i]=((y2-y1)/(x2-x1))*(xmin-x1)+y1;
-                } else if(x[i]>xmax){
+                }
+                else if(x[i]>xmax)
+                {
                     x[i]=xmax;
                     y[i]=((y2-y1)/(x2-x1))*(xmax-x1)+y1;
                 }
-                if(y[i]<ymin){
+                if(y[i]<ymin)
+                {
                     y[i]=ymin;
                     x[i]=((x2-x1)/(y2-y1))*(ymin-y1)+x1;
-                } else if(y[i]>ymax){
+                }
+                else if(y[i]>ymax)
+                {
                     y[i]=ymax;
                     x[i]=((x2-x1)/(y2-y1))*(ymax-y1)+x1;
                 }
 
             }
-            if(!(x[0]<xmin && x[1]<xmin) && !(x[0]>xmax && x[1]>xmax)) {
+            if(!(x[0]<xmin && x[1]<xmin) && !(x[0]>xmax && x[1]>xmax))
+            {
                 drawLine(x[0],y[0],x[1],y[1], color);
             }
         }
     }
 }
+
+void drawClippedPixelMD(float xmin, float ymin, float xmax, float ymax,
+                       float x1, float y1, float x2, float y2, Uint32 color)
+{
+
+    float x[2],y[2];
+    int  i;
+
+    if(!(x1<xmin && x2<xmin) && !(x1>xmax && x2>xmax))
+    {
+        if(!(y1<ymin && y2<ymin) && !(y1>ymax && y2>ymax))
+        {
+
+            x[0] = x1;
+            y[0] = y1;
+            x[1] = x2;
+            y[1] = y2;
+
+            for(i = 0; i < 2; i++)
+            {
+                if(x[i]<xmin)
+                {
+                    x[i]=xmin;
+                    y[i]=((y2-y1)/(x2-x1))*(xmin-x1)+y1;
+                }
+                else if(x[i]>xmax)
+                {
+                    x[i]=xmax;
+                    y[i]=((y2-y1)/(x2-x1))*(xmax-x1)+y1;
+                }
+                if(y[i]<ymin)
+                {
+                    y[i]=ymin;
+                    x[i]=((x2-x1)/(y2-y1))*(ymin-y1)+x1;
+                }
+                else if(y[i]>ymax)
+                {
+                    y[i]=ymax;
+                    x[i]=((x2-x1)/(y2-y1))*(ymax-y1)+x1;
+                }
+
+            }
+            if(!(x[0]<xmin && x[1]<xmin) && !(x[0]>xmax && x[1]>xmax))
+            {
+                drawLine(x[0],y[0],x[0],y[0], color);
+            }
+        }
+    }
+}
+
+
+
+
+
 
 void drawRectangle(int x1, int y1, int x2, int y2, Uint32 lineColor)
 {
@@ -323,15 +395,21 @@ void drawRectangle(int x1, int y1, int x2, int y2, Uint32 lineColor, Uint32 fill
 
     int half_x, half_y;
 
-    if(x2 > x1) {
+    if(x2 > x1)
+    {
         half_x = x1 + (int) ((x2 - x1) / 2);
-    } else {
+    }
+    else
+    {
         half_x = x2 + (int) ((x1 - x2) / 2);
     }
 
-    if(y2 > y1) {
+    if(y2 > y1)
+    {
         half_y = y1 + (int) ((y2 - y1) / 2);
-    } else {
+    }
+    else
+    {
         half_y = y2 + (int) ((y1 - y2) / 2);
     }
 
@@ -347,8 +425,12 @@ void drawWuLine(int x0, int y0, int x1, int y1, Uint32 clrLine )
     /* Make sure the line runs top to bottom */
     if (y0 > y1)
     {
-        int aux = y0; y0 = y1; y1 = aux;
-        aux = x0; x0 = x1; x1 = aux;
+        int aux = y0;
+        y0 = y1;
+        y1 = aux;
+        aux = x0;
+        x0 = x1;
+        x1 = aux;
     }
 
     /* Draw the initial pixel, which is always exactly intersected by
@@ -387,7 +469,8 @@ void drawWuLine(int x0, int y0, int x1, int y1, Uint32 clrLine )
         {
             y0++;
             setPixel( x0, y0, clrLine );
-        } while (--deltaY != 0);
+        }
+        while (--deltaY != 0);
         return;
     }
 
@@ -399,7 +482,8 @@ void drawWuLine(int x0, int y0, int x1, int y1, Uint32 clrLine )
             x0 += xDir;
             y0++;
             setPixel( x0, y0, clrLine );
-        } while (--deltaY != 0);
+        }
+        while (--deltaY != 0);
         return;
     }
 
@@ -417,21 +501,23 @@ void drawWuLine(int x0, int y0, int x1, int y1, Uint32 clrLine )
     /* Is this an X-major or Y-major line? */
     if (deltaY > deltaX)
     {
-    /* Y-major line; calculate 16-bit fixed-point fractional part of a
-    pixel that X advances each time Y advances 1 pixel, truncating the
-        result so that we won't overrun the endpoint along the X axis */
+        /* Y-major line; calculate 16-bit fixed-point fractional part of a
+        pixel that X advances each time Y advances 1 pixel, truncating the
+            result so that we won't overrun the endpoint along the X axis */
         errorAdj = ((unsigned long) deltaX << 16) / (unsigned long) deltaY;
         /* Draw all pixels other than the first and last */
-        while (--deltaY) {
+        while (--deltaY)
+        {
             errorAccaux = errorAcc;   /* remember currrent accumulated error */
             errorAcc += errorAdj;      /* calculate error for next pixel */
-            if (errorAcc <= errorAccaux) {
+            if (errorAcc <= errorAccaux)
+            {
                 /* The error accumulator turned over, so advance the X coord */
                 x0 += xDir;
             }
             y0++; /* Y-major, so always advance Y */
-                  /* The IntensityBits most significant bits of errorAcc give us the
-                  intensity weighting for this pixel, and the complement of the
+            /* The IntensityBits most significant bits of errorAcc give us the
+            intensity weighting for this pixel, and the complement of the
             weighting for the paired pixel */
             weighting = errorAcc >> 8;
             /*
@@ -470,16 +556,18 @@ void drawWuLine(int x0, int y0, int x1, int y1, Uint32 clrLine )
     result to avoid overrunning the endpoint along the X axis */
     errorAdj = ((unsigned long) deltaY << 16) / (unsigned long) deltaX;
     /* Draw all pixels other than the first and last */
-    while (--deltaX) {
+    while (--deltaX)
+    {
         errorAccaux = errorAcc;   /* remember currrent accumulated error */
         errorAcc += errorAdj;      /* calculate error for next pixel */
-        if (errorAcc <= errorAccaux) {
+        if (errorAcc <= errorAccaux)
+        {
             /* The error accumulator turned over, so advance the Y coord */
             y0++;
         }
         x0 += xDir; /* X-major, so always advance X */
-                    /* The IntensityBits most significant bits of errorAcc give us the
-                    intensity weighting for this pixel, and the complement of the
+        /* The IntensityBits most significant bits of errorAcc give us the
+        intensity weighting for this pixel, and the complement of the
         weighting for the paired pixel */
         weighting = errorAcc >> 8;
         /*
@@ -516,66 +604,68 @@ void drawWuLine(int x0, int y0, int x1, int y1, Uint32 clrLine )
     setPixel( x1, y1, clrLine );
 }
 
-void bezierCurve(int x[] , int y[], bool points, Uint32 color)
+void bezierCurve(int x[], int y[], bool points, Uint32 color)
 {
-	double xu = 0.0 , yu = 0.0 , u = 0.0 ;
-	//int i = 0 ;
+    double xu = 0.0, yu = 0.0, u = 0.0 ;
+    //int i = 0 ;
 
-    if(points) {
+    if(points)
+    {
         target(x[0],y[0], color);
         target(x[1],y[1], color);
         target(x[2],y[2], color);
         target(x[3],y[3], color);
     }
 
-	for(u = 0.0 ; u <= 1.0 ; u += 0.0001)
-	{
-		xu = pow(1-u,3)*x[0]+3*u*pow(1-u,2)*x[1]+3*pow(u,2)*(1-u)*x[2]
-			+pow(u,3)*x[3];
-		yu = pow(1-u,3)*y[0]+3*u*pow(1-u,2)*y[1]+3*pow(u,2)*(1-u)*y[2]
-			+pow(u,3)*y[3];
-		setPixel((int)xu , (int)yu, color) ;
-		//printf("(%d,%d)\n",(int)xu , (int)yu);
-	}
+    for(u = 0.0 ; u <= 1.0 ; u += 0.0001)
+    {
+        xu = pow(1-u,3)*x[0]+3*u*pow(1-u,2)*x[1]+3*pow(u,2)*(1-u)*x[2]
+             +pow(u,3)*x[3];
+        yu = pow(1-u,3)*y[0]+3*u*pow(1-u,2)*y[1]+3*pow(u,2)*(1-u)*y[2]
+             +pow(u,3)*y[3];
+        setPixel((int)xu, (int)yu, color) ;
+        //printf("(%d,%d)\n",(int)xu , (int)yu);
+    }
 }
 
 /*Function to draw all other 7 pixels present at symmetric position*/
 void drawCircle(int xc, int yc, int x, int y, Uint32 color)
 {
     setPixel(xc+x,yc+y, color) ;
-	setPixel(xc-x,yc+y, color);
-	setPixel(xc+x,yc-y, color);
-	setPixel(xc-x,yc-y, color);
-	setPixel(xc+y,yc+x, color);
-	setPixel(xc-y,yc+x, color);
-	setPixel(xc+y,yc-x, color);
-	setPixel(xc-y,yc-x, color);
+    setPixel(xc-x,yc+y, color);
+    setPixel(xc+x,yc-y, color);
+    setPixel(xc-x,yc-y, color);
+    setPixel(xc+y,yc+x, color);
+    setPixel(xc-y,yc+x, color);
+    setPixel(xc+y,yc-x, color);
+    setPixel(xc-y,yc-x, color);
 }
 
 /*Function for circle-generation using Bresenham's algorithm */
 void circleBres(int xc, int yc, int r, Uint32 color)
 {
-	int x = 0, y = r;
-	int d = 3 - 2 * r;
-	while (y >= x)
-	{
-		/*for each pixel we will draw all eight pixels */
-		drawCircle(xc, yc, x, y, color);
-		x++;
+    int x = 0, y = r;
+    int d = 3 - 2 * r;
+    while (y >= x)
+    {
+        /*for each pixel we will draw all eight pixels */
+        drawCircle(xc, yc, x, y, color);
+        x++;
 
-		/*check for decision parameter and correspondingly update d, x, y*/
-		if (d > 0)
-		{
-			y--;
-			d = d + 4 * (x - y) + 10;
-		}
-		else
-			d = d + 4 * x + 6;
-		drawCircle(xc, yc, x, y, color);
-	}
+        /*check for decision parameter and correspondingly update d, x, y*/
+        if (d > 0)
+        {
+            y--;
+            d = d + 4 * (x - y) + 10;
+        }
+        else
+            d = d + 4 * x + 6;
+        drawCircle(xc, yc, x, y, color);
+    }
 }
 
-void randomFill() {
+void randomFill()
+{
 
     int x = randomNumber(0,639);
     int y = randomNumber(0,479);
@@ -593,26 +683,77 @@ void randomFill() {
 /* --- FUNÇÕES ---
 Função 1 y = x
 Função 2 y = -x
-Função 3 y = 2x^2-6x+1x+1
+Função 3 y = 2x^2-6x+1
 Função 4 y = sin x
 Função 5 y = -x^2+4
 */
 
 
 // y = x
-void funcao1 (Uint32 color)
+void funcao1 (int pos_x,int pos_y,Uint32 color)
 {
-//TESTE Func
-    float x,y=0.0;
 
-    for(x=0.0; x<800; x= x+0.01)
+    float x,y=0.0;
+    for(x=-300; x<300; x= x+0.01)
     {
         y=x;
-        setPixel(x,y,color);
+        drawClippedPixelMD(125,25,675,575,pos_x+x+400,pos_y+y+300,pos_x+x+400,pos_y+y+300,color);
     }
-
-
 }
+
+
+//Função 2 y = -x
+void funcao2 (int pos_x,int pos_y,Uint32 color)
+{
+
+    float x,y=0.0;
+    for(x=-300; x<300; x= x+0.01)
+    {
+        y=-x;
+        drawClippedPixelMD(125,25,675,575,pos_x+x+400,pos_y+y+300,pos_x+x+400,pos_y+y+300,color);
+    }
+}
+
+//Função 3 y = 2x^2-6x+1
+void funcao3 (int pos_x,int pos_y,Uint32 color)
+{
+
+    float x,y=0.0;
+    for(x=-300; x<300; x= x+0.01)
+    {
+        y=(2*pow(x,2))-(6*x)+1;
+        drawClippedPixelMD(125,25,675,575,pos_x+x+400,pos_y+y+300,pos_x+x+400,pos_y+y+300,color);
+    }
+}
+
+//Função 4 y = sin x
+void funcao4 (int pos_x,int pos_y,Uint32 color)
+{
+
+    float x,y=0.0;
+    for(x=-300; x<300; x= x+0.01)
+    {
+        y=sin(x);
+        drawClippedPixelMD(125,25,675,575,pos_x+x+400,pos_y+y+300,pos_x+x+400,pos_y+y+300,color);
+    }
+}
+
+//Função 5 y = -x^2+4
+void funcao5 (int pos_x,int pos_y,Uint32 color)
+{
+
+    float x,y=0.0;
+    for(x=-300; x<300; x= x+0.01)
+    {
+        y=-pow(x,2)+4;
+        drawClippedPixelMD(125,25,675,575,pos_x+x+400,pos_y+y+300,pos_x+x+400,pos_y+y+300,color);
+    }
+}
+
+
+
+
+
 
 void displayBaseGraphic(int pos_x, int pos_y)
 {
@@ -629,7 +770,7 @@ void displayBaseGraphic(int pos_x, int pos_y)
     drawClippedLineMD(125,25,675,575,pos_x+0,pos_y+575,pos_x+800,pos_y+575,RGB(192,192,192));
 
 
-     //Linhas internas Y do Grafico
+    //Linhas internas Y do Grafico
 
     drawClippedLineMD(125,25,675,575,pos_x+125,pos_y+0,pos_x+125,pos_y+600,RGB(192,192,192));
 
@@ -645,11 +786,17 @@ void displayBaseGraphic(int pos_x, int pos_y)
 }
 
 
-void display() {
+void display()
+{
     //drawRectangle(pos_x+125,pos_y+25,pos_x+675,pos_y+575,RGB(0,0,0),RGB(255,255,255));
     drawRectangle(125,25,675,575,RGB(0,0,0),RGB(255,255,255));
+
     displayBaseGraphic(pos_x,pos_y);
-    //funcao1(RGB(0,0,255));
+    funcao1(pos_x,pos_y,RGB(0,0,255));
+    funcao2(pos_x,pos_y,RGB(255,0,0));
+    funcao3(pos_x,pos_y,RGB(0,255,0));
+    funcao4(pos_x,pos_y,RGB(0,255,255));
+    funcao5(pos_x,pos_y,RGB(255,255,0));
 }
 
 /*
@@ -753,9 +900,9 @@ int main()
     SDL_Init(SDL_INIT_VIDEO);
 
     SDL_Window * window = SDL_CreateWindow(titulo.c_str(),
-        SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-        800, 600,
-        SDL_WINDOW_RESIZABLE);
+                                           SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+                                           800, 600,
+                                           SDL_WINDOW_RESIZABLE);
 
     window_surface = SDL_GetWindowSurface(window);
 
@@ -766,9 +913,9 @@ int main()
     // Fim das inicializações
 
     printf("Pixel format: %s\n",
-        SDL_GetPixelFormatName(window_surface->format->format));
+           SDL_GetPixelFormatName(window_surface->format->format));
 
-     while (1)
+    while (1)
     {
 
         SDL_Event event;
@@ -780,83 +927,87 @@ int main()
                 exit(0);
             }
 
-            switch( event.type ){
+            switch( event.type )
+            {
             /* Look for a keypress */
-                case SDL_KEYDOWN:
-                    /* Check the SDLKey values and move change the coords */
-                    switch( event.key.keysym.sym ){
-                        case SDLK_LEFT:
-                            xvel = -1;
-                            printf("Pressionada a tecla LEFT\n");
-                            break;
-                        case SDLK_RIGHT:
-                            xvel =  1;
-                            printf("Pressionada a tecla RIGHT\n");
-                            break;
-                        case SDLK_UP:
-                            yvel = -1;
-                            printf("Pressionada a tecla UP\n");
-                            break;
-                        case SDLK_DOWN:
-                            yvel =  1;
-                            printf("Pressionada a tecla DOWN\n");
-                            break;
-                        case SDLK_PLUS:
-                            yvel =  0;
-                            printf("Pressionada a tecla PLUS\n");
-                            break;
-                        case SDLK_KP_PLUS:
-                            yvel =  0;
-                            printf("Pressionada a tecla PLUS\n");
-                            break;
-                        case SDLK_MINUS:
-                            yvel =  0;
-                            printf("Pressionada a tecla MINUS\n");
-                            break;
-                        case SDLK_KP_MINUS:
-                            yvel =  0;
-                            printf("Pressionada a tecla MINUS\n");
-                            break;
-                        default:
-                            break;
-                    }
-                break;
-                /* We must also use the SDL_KEYUP events to zero the x */
-                /* and y velocity variables. But we must also be       */
-                /* careful not to zero the velocities when we shouldn't*/
-                case SDL_KEYUP:
-                    switch( event.key.keysym.sym ){
-                        case SDLK_LEFT:
-                            /* We check to make sure the alien is moving */
-                            /* to the left. If it is then we zero the    */
-                            /* velocity. If the alien is moving to the   */
-                            /* right then the right key is still press   */
-                            /* so we don't tocuh the velocity            */
-                            if( xvel < 0 )
-                                xvel = 0;
-                            break;
-                        case SDLK_RIGHT:
-                            if( xvel > 0 )
-                                xvel = 0;
-                            break;
-                        case SDLK_UP:
-                            if( yvel < 0 )
-                                yvel = 0;
-                            break;
-                        case SDLK_DOWN:
-                            if( yvel > 0 )
-                                yvel = 0;
-                            break;
-                        default:
-                            break;
-                    }
+            case SDL_KEYDOWN:
+                /* Check the SDLKey values and move change the coords */
+                switch( event.key.keysym.sym )
+                {
+                case SDLK_LEFT:
+                    xvel = -1;
+                    printf("Pressionada a tecla LEFT\n");
                     break;
-                    default:
-                        break;
+                case SDLK_RIGHT:
+                    xvel =  1;
+                    printf("Pressionada a tecla RIGHT\n");
+                    break;
+                case SDLK_UP:
+                    yvel = -1;
+                    printf("Pressionada a tecla UP\n");
+                    break;
+                case SDLK_DOWN:
+                    yvel =  1;
+                    printf("Pressionada a tecla DOWN\n");
+                    break;
+                case SDLK_PLUS:
+                    yvel =  0;
+                    printf("Pressionada a tecla PLUS\n");
+                    break;
+                case SDLK_KP_PLUS:
+                    yvel =  0;
+                    printf("Pressionada a tecla PLUS\n");
+                    break;
+                case SDLK_MINUS:
+                    yvel =  0;
+                    printf("Pressionada a tecla MINUS\n");
+                    break;
+                case SDLK_KP_MINUS:
+                    yvel =  0;
+                    printf("Pressionada a tecla MINUS\n");
+                    break;
+                default:
+                    break;
                 }
+                break;
+            /* We must also use the SDL_KEYUP events to zero the x */
+            /* and y velocity variables. But we must also be       */
+            /* careful not to zero the velocities when we shouldn't*/
+            case SDL_KEYUP:
+                switch( event.key.keysym.sym )
+                {
+                case SDLK_LEFT:
+                    /* We check to make sure the alien is moving */
+                    /* to the left. If it is then we zero the    */
+                    /* velocity. If the alien is moving to the   */
+                    /* right then the right key is still press   */
+                    /* so we don't tocuh the velocity            */
+                    if( xvel < 0 )
+                        xvel = 0;
+                    break;
+                case SDLK_RIGHT:
+                    if( xvel > 0 )
+                        xvel = 0;
+                    break;
+                case SDLK_UP:
+                    if( yvel < 0 )
+                        yvel = 0;
+                    break;
+                case SDLK_DOWN:
+                    if( yvel > 0 )
+                        yvel = 0;
+                    break;
+                default:
+                    break;
+                }
+                break;
+            default:
+                break;
+            }
 
 
             /* Update the alien position */
+
             pos_x += xvel;
             pos_y += yvel;
 
@@ -880,12 +1031,12 @@ int main()
             }
             if(event.type == SDL_MOUSEBUTTONDOWN)
             {
-				/*If left mouse button down */
+                /*If left mouse button down */
                 if(event.button.button == SDL_BUTTON_LEFT)
-				{
-					printf("Mouse pressed on (%d,%d)\n",event.motion.x,event.motion.y) ;
-					circleBres(event.motion.x, event.motion.y, 10, RGB(0,0,255));
-				}
+                {
+                    printf("Mouse pressed on (%d,%d)\n",event.motion.x,event.motion.y) ;
+                    circleBres(event.motion.x, event.motion.y, 10, RGB(0,0,255));
+                }
             }
         }
 
