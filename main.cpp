@@ -15,6 +15,12 @@ typedef struct
     int x, y;
 } Point;
 
+typedef struct
+{
+    float x, y;
+} XYR;
+
+
 unsigned int * pixels;
 int width, height;
 SDL_Surface * window_surface;
@@ -28,6 +34,12 @@ int pos_y = 0;
 unsigned char b;
 double valord;
 bool b1;
+
+XYR MIN_SEL;
+    XYR MAX_SEL;
+    XYR MIN_EXB;
+    XYR MAX_EXB;
+
 
 unsigned char code(double    x, double    y,
                    double xmin, double xmax, double ymin, double ymax)
@@ -735,16 +747,29 @@ void funcao4 (int pos_x,int pos_y,Uint32 color)
 {
 
     float x,y=0.0;
-    int posicaoX,posicaoY;
+    float posicaoX=0,posicaoY=0,xd,yd;
+
+    MIN_SEL.x = 0;
+    MIN_SEL.y = 0;
+    MAX_SEL.x = 1;
+    MAX_SEL.y = 1;
+
+    MIN_EXB.x = 0;
+    MIN_EXB.y = 0;
+    MAX_EXB.x = 27.5;
+    MAX_EXB.y = 27.5;
+
     for(x=-300; x<300; x= x+0.01)
     {
         y=sin(x);
-        posicaoX =pos_x+x+400;
-        posicaoY = pos_y+y+300;
+        posicaoX =x;
+        posicaoY = y;
 
-        //drawRectangle(posicaoX,posicaoY,posicaoX+2,posicaoY+2,color);
+        xd = (((posicaoX - MIN_SEL.x) * (MAX_EXB.x - MIN_EXB.x))/(MAX_SEL.x - MIN_SEL.x))+MIN_EXB.x;
 
-        drawClippedPixelMD(125,25,675,575,posicaoX,posicaoY,posicaoX,posicaoY,color);
+        yd = (((posicaoY - MIN_SEL.y) * (MAX_EXB.y - MIN_EXB.y))/(MAX_SEL.y - MIN_SEL.y))+MIN_EXB.y;
+
+        drawClippedPixelMD(125,25,675,575,pos_x+400+xd,pos_y+yd+300,pos_x+xd+400,pos_y+yd+300,color);
     }
 }
 
@@ -799,14 +824,16 @@ void displayBaseGraphic(int pos_x, int pos_y)
 void display()
 {
     //drawRectangle(pos_x+125,pos_y+25,pos_x+675,pos_y+575,RGB(0,0,0),RGB(255,255,255));
-    drawRectangle(125,25,675,575,RGB(0,0,0),RGB(255,255,255));
 
+
+
+    drawRectangle(125,25,675,575,RGB(0,0,0),RGB(255,255,255));
     displayBaseGraphic(pos_x,pos_y);
-    funcao1(pos_x,pos_y,RGB(0,0,255));
-    funcao2(pos_x,pos_y,RGB(255,0,0));
-    funcao3(pos_x,pos_y,RGB(0,255,0));
-    funcao4(pos_x,pos_y,RGB(0,255,255));
-    funcao5(pos_x,pos_y,RGB(255,255,0));
+    //funcao1(pos_x,pos_y,RGB(0,0,255));
+    //funcao2(pos_x,pos_y,RGB(255,0,0));
+    //funcao3(pos_x,pos_y,RGB(0,255,0));
+    funcao4(pos_x,pos_y,RGB(255,0,0));
+    //funcao5(pos_x,pos_y,RGB(255,255,0));
 }
 
 
