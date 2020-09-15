@@ -618,33 +618,36 @@ void displayBaseGraphic(int pos_x, int pos_y)
 {
 
     //Linhas internas X do Grafico
-    drawClippedLineMD(pos_x+125,pos_y+25,pos_x+675,pos_y+575,0,25,800,25,RGB(0,0,0));
+    drawClippedLineMD(125,25,675,575,pos_x+0,pos_y+25,pos_x+800,pos_y+25,RGB(192,192,192));
 
-    drawClippedLineMD(pos_x+125,pos_y+25,pos_x+675,pos_y+575,0,162.5,800,162.5,RGB(0,0,0));
+    drawClippedLineMD(125,25,675,575,pos_x+0,pos_y+162.5,pos_x+800,pos_y+162.5,RGB(192,192,192));
 
-    drawClippedLineMD(pos_x+125,pos_y+25,pos_x+675,pos_y+575,0,300,800,300,RGB(0,0,0));
+    drawClippedLineMD(125,25,675,575,pos_x+0,pos_y+300,pos_x+800,pos_y+300,RGB(0,0,0));
 
-    drawClippedLineMD(pos_x+125,pos_y+25,pos_x+675,pos_y+575,0,437.5,800,437.5,RGB(0,0,0));
+    drawClippedLineMD(125,25,675,575,pos_x+0,pos_y+437.5,pos_x+800,pos_y+437.5,RGB(192,192,192));
 
-    drawClippedLineMD(pos_x+125,pos_y+25,pos_x+675,pos_y+575,0,575,800,575,RGB(0,0,0));
+    drawClippedLineMD(125,25,675,575,pos_x+0,pos_y+575,pos_x+800,pos_y+575,RGB(192,192,192));
+
 
      //Linhas internas Y do Grafico
-    drawClippedLineMD(pos_x+125,pos_y+25,pos_x+675,pos_y+575,125,0,125,600,RGB(0,0,0));
 
-    drawClippedLineMD(pos_x+125,pos_y+25,pos_x+675,pos_y+575,262.5,0,262.5,600,RGB(0,0,0));
+    drawClippedLineMD(125,25,675,575,pos_x+125,pos_y+0,pos_x+125,pos_y+600,RGB(192,192,192));
 
-    drawClippedLineMD(pos_x+125,pos_y+25,pos_x+675,pos_y+575,400,0,400,600,RGB(0,0,0));
+    drawClippedLineMD(125,25,675,575,pos_x+262.5,pos_y+0,pos_x+262.5,pos_y+600,RGB(192,192,192));
 
-    drawClippedLineMD(pos_x+125,pos_y+25,pos_x+675,pos_y+575,537.5,0,537.5,600,RGB(0,0,0));
+    drawClippedLineMD(125,25,675,575,pos_x+400,pos_y+0,pos_x+400,pos_y+600,RGB(0,0,0));
 
-    drawClippedLineMD(pos_x+125,pos_y+25,pos_x+675,pos_y+575,675,0,675,600,RGB(0,0,0));
+    drawClippedLineMD(125,25,675,575,pos_x+537.5,pos_y+0,pos_x+537.5,pos_y+600,RGB(192,192,192));
+
+    drawClippedLineMD(125,25,675,575,pos_x+675,pos_y+0,pos_x+675,pos_y+600,RGB(192,192,192));
 
 
 }
 
 
 void display() {
-    drawRectangle(pos_x+125,pos_y+25,pos_x+675,pos_y+575,RGB(0,0,0),RGB(255,255,255));
+    //drawRectangle(pos_x+125,pos_y+25,pos_x+675,pos_y+575,RGB(0,0,0),RGB(255,255,255));
+    drawRectangle(125,25,675,575,RGB(0,0,0),RGB(255,255,255));
     displayBaseGraphic(pos_x,pos_y);
     //funcao1(RGB(0,0,255));
 }
