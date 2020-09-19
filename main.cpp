@@ -757,46 +757,34 @@ void plotBaseGraphic(int pos_x,int pos_y,Uint32 color)
     float yd;
     float posicaoY;
 
-    MIN_SEL.x = 0;
-    MIN_SEL.y = 0;
-    MAX_SEL.x = 1;
-    MAX_SEL.y = 1;
+    //MIN_SEL.x = 0;
+    //MIN_SEL.y = 0;
+    //MAX_SEL.x = 1;
+    //MAX_SEL.y = 1;
 
-    MIN_EXB.x = 0;
-    MIN_EXB.y = 0;
-    MAX_EXB.x = 27.5 + zoom_x;
-    MAX_EXB.y = 27.5 + zoom_y;
+    //MIN_EXB.x = 0;
+    //MIN_EXB.y = 0;
+    //MAX_EXB.x = 27.5 + zoom_x;
+    //MAX_EXB.y = 27.5 + zoom_y;
 
+    //posicaoX = x;
+    //posicaoY = y;
+
+    //xd = (((posicaoX - MIN_SEL.x) * (MAX_EXB.x - MIN_EXB.x)) / (MAX_SEL.x - MIN_SEL.x)) + MIN_EXB.x;
+    //yd = (((posicaoY - MIN_SEL.y) * (MAX_EXB.y - MIN_EXB.y)) / (MAX_SEL.y - MIN_SEL.y)) + MIN_EXB.y;
+
+    //Desenha as colunas X
     for(a = 25;a <= 600; a+=137.5)
     {
-        for(x = -300;x < 300;x = x+0.01)
-        {
-            posicaoX = x;
-            posicaoY = y;
-
-            xd = (((posicaoX - MIN_SEL.x) * (MAX_EXB.x - MIN_EXB.x)) / (MAX_SEL.x - MIN_SEL.x)) + MIN_EXB.x;
-            yd = (((posicaoY - MIN_SEL.y) * (MAX_EXB.y - MIN_EXB.y)) / (MAX_SEL.y - MIN_SEL.y)) + MIN_EXB.y;
-
-            drawClippedPixelMD(125,25,675,575,pos_x+xd,pos_y+yd+a,pos_x+xd,pos_y+yd+a,color);
-        }
+        drawClippedLineMD(125,25,675,575,pos_x,pos_y+a,pos_x+800,pos_y+a,color);
     }
 
-    x = 0;
-    y = 0;
-
+    //Desenha as colunas Y
     for(a = 125;a <= 800; a+=137.5)
     {
-        for(y = 0;y < 600;y = y+0.01)
-        {
-            posicaoX = x;
-            posicaoY = y;
-
-            xd = (((posicaoX - MIN_SEL.x) * (MAX_EXB.x - MIN_EXB.x)) / (MAX_SEL.x - MIN_SEL.x)) + MIN_EXB.x;
-            yd = (((posicaoY - MIN_SEL.y) * (MAX_EXB.y - MIN_EXB.y)) / (MAX_SEL.y - MIN_SEL.y)) + MIN_EXB.y;
-
-            drawClippedPixelMD(125,25,675,575,pos_x+xd+a,pos_y+yd,pos_x+xd+a,pos_y+yd,color);
-        }
+        drawClippedLineMD(125,25,675,575,pos_x+a,pos_y,pos_x+a,pos_y+800,color);
     }
+
 }
 
 void display()
