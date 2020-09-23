@@ -731,7 +731,7 @@ void plotGraphic(int pos_x,int pos_y,int sel_func, Uint32 color)
             y = sin(x);
             break;
         case 5:
-            y = -pow(x,2)+4;;
+            y = -pow(x,2)+4;
             break;
         default:
             break;
@@ -747,44 +747,82 @@ void plotGraphic(int pos_x,int pos_y,int sel_func, Uint32 color)
     }
 }
 
-void plotBaseGraphic(int pos_x,int pos_y,Uint32 color)
+void plotBaseGraphic(int pos_x,int pos_y, Uint32 color)
 {
     float a;
-    float x;
-    float xd;
-    float posicaoX;
-    float y;
-    float yd;
-    float posicaoY;
+    float x,y=0.0;
+    float posicaoX=0,posicaoY=0,xd,yd;
 
-    //MIN_SEL.x = 0;
-    //MIN_SEL.y = 0;
-    //MAX_SEL.x = 1;
-    //MAX_SEL.y = 1;
+    MIN_SEL.x = 0;
+    MIN_SEL.y = 0;
+    MAX_SEL.x = 1;
+    MAX_SEL.y = 1;
 
-    //MIN_EXB.x = 0;
-    //MIN_EXB.y = 0;
-    //MAX_EXB.x = 27.5 + zoom_x;
-    //MAX_EXB.y = 27.5 + zoom_y;
+    MIN_EXB.x = 0;
+    MIN_EXB.y = 0;
+    MAX_EXB.x = 27.5 + zoom_x;
+    MAX_EXB.y = 27.5 + zoom_y;
 
-    //posicaoX = x;
-    //posicaoY = y;
-
-    //xd = (((posicaoX - MIN_SEL.x) * (MAX_EXB.x - MIN_EXB.x)) / (MAX_SEL.x - MIN_SEL.x)) + MIN_EXB.x;
-    //yd = (((posicaoY - MIN_SEL.y) * (MAX_EXB.y - MIN_EXB.y)) / (MAX_SEL.y - MIN_SEL.y)) + MIN_EXB.y;
-
-    //Desenha as colunas X
-    for(a = 25;a <= 600; a+=137.5)
+    //Desenha o eixo x
+    for(a = 0;a >= -300; a-=137.5+zoom_y)
     {
-        drawClippedLineMD(125,25,675,575,pos_x,pos_y+a,pos_x+800,pos_y+a,color);
+        for(x = -300;x <= 300; x+=0.01)
+        {
+            posicaoX = x;
+            posicaoY = y;
+
+            xd = (((posicaoX - MIN_SEL.x) * (MAX_EXB.x - MIN_EXB.x)) / (MAX_SEL.x - MIN_SEL.x)) + MIN_EXB.x;
+            yd = (((posicaoY - MIN_SEL.y) * (MAX_EXB.y - MIN_EXB.y)) / (MAX_SEL.y - MIN_SEL.y)) + MIN_EXB.y;
+
+            drawClippedPixelMD(125,25,675,575,pos_x+400+xd,pos_y+yd+300+a,pos_x+xd+400,pos_y+yd+300+a,color);
+        }
     }
 
-    //Desenha as colunas Y
-    for(a = 125;a <= 800; a+=137.5)
+    for(a = 0;a <= 300; a+=137.5+zoom_y)
     {
-        drawClippedLineMD(125,25,675,575,pos_x+a,pos_y,pos_x+a,pos_y+800,color);
+        for(x = -300;x <= 300; x+=0.01)
+        {
+            posicaoX = x;
+            posicaoY = y;
+
+            xd = (((posicaoX - MIN_SEL.x) * (MAX_EXB.x - MIN_EXB.x)) / (MAX_SEL.x - MIN_SEL.x)) + MIN_EXB.x;
+            yd = (((posicaoY - MIN_SEL.y) * (MAX_EXB.y - MIN_EXB.y)) / (MAX_SEL.y - MIN_SEL.y)) + MIN_EXB.y;
+
+            drawClippedPixelMD(125,25,675,575,pos_x+400+xd,pos_y+yd+300+a,pos_x+xd+400,pos_y+yd+300+a,color);
+        }
     }
 
+    x = 0;
+    y = 0;
+
+    //Desenha o eixo y
+    for(a = 0;a >= -400; a-=137.5+zoom_x)
+    {
+        for(y = -400;y <= 400; y+=0.01)
+        {
+            posicaoX = x;
+            posicaoY = y;
+
+            xd = (((posicaoX - MIN_SEL.x) * (MAX_EXB.x - MIN_EXB.x)) / (MAX_SEL.x - MIN_SEL.x)) + MIN_EXB.x;
+            yd = (((posicaoY - MIN_SEL.y) * (MAX_EXB.y - MIN_EXB.y)) / (MAX_SEL.y - MIN_SEL.y)) + MIN_EXB.y;
+
+            drawClippedPixelMD(125,25,675,575,pos_x+400+xd+a,pos_y+yd+300,pos_x+xd+400+a,pos_y+yd+300,color);
+        }
+    }
+
+    for(a = 0;a <= 400; a+=137.5+zoom_x)
+    {
+        for(y = -400;y <= 400; y+=0.01)
+        {
+            posicaoX = x;
+            posicaoY = y;
+
+            xd = (((posicaoX - MIN_SEL.x) * (MAX_EXB.x - MIN_EXB.x)) / (MAX_SEL.x - MIN_SEL.x)) + MIN_EXB.x;
+            yd = (((posicaoY - MIN_SEL.y) * (MAX_EXB.y - MIN_EXB.y)) / (MAX_SEL.y - MIN_SEL.y)) + MIN_EXB.y;
+
+            drawClippedPixelMD(125,25,675,575,pos_x+400+xd+a,pos_y+yd+300,pos_x+xd+400+a,pos_y+yd+300,color);
+        }
+    }
 }
 
 void display()
